@@ -4,9 +4,10 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc.js';
 import timezone from 'dayjs/plugin/timezone.js';
 import fs from 'fs';
-import decompress from 'decompress';
 import os from 'os';
+import decompress from 'decompress';
 import { Buffer } from 'buffer';
+import process from 'process';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -20,7 +21,7 @@ const name = core.getInput('artifact_name') || null;
 const directory = core.getInput('directory') || "artifact";
 
 const octokit = github.getOctokit(githubToken);
-
+const tempDir = process.env['RUNNER_TEMP'] || os.tmpdir();
 const per_page = 100;
 
 const { data } = await octokit.request("GET /repos/{owner}/{repo}/actions/artifacts",{
@@ -40,9 +41,9 @@ for(const artifact of artifacts) {
       artifact_id: artifact.id
     });
 
-    fs.appendFileSync(`${os.tmpdir()}/${artifact.name}.zip`, Buffer.from(response.data));
-    decompress(`${os.tmpdir()}/${artifact.name}.zip`, directory);
-    fs.unlinkSync(`${os.tmpdir()}/${artifact.name}.zip`);
+    fs.appendFileSync(`${tempDir}/${artifact.name}.zip`, Buffer.from(response.data));
+    decompress(`${tempDir}/${artifact.name}.zip`, directory);
+    fs.unlinkSync(`${tempDir}/${artifact.name}.zip`);
 
     console.log(response);
     break;

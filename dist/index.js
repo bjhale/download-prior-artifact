@@ -40216,6 +40216,13 @@ module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("perf_hooks")
 
 /***/ }),
 
+/***/ 7282:
+/***/ ((module) => {
+
+module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("process");
+
+/***/ }),
+
 /***/ 3477:
 /***/ ((module) => {
 
@@ -41903,9 +41910,11 @@ __nccwpck_require__.a(__webpack_module__, async (__webpack_handle_async_dependen
 /* harmony import */ var dayjs_plugin_utc_js__WEBPACK_IMPORTED_MODULE_3__ = __nccwpck_require__(4359);
 /* harmony import */ var dayjs_plugin_timezone_js__WEBPACK_IMPORTED_MODULE_4__ = __nccwpck_require__(4761);
 /* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_5__ = __nccwpck_require__(7147);
-/* harmony import */ var decompress__WEBPACK_IMPORTED_MODULE_6__ = __nccwpck_require__(9350);
-/* harmony import */ var os__WEBPACK_IMPORTED_MODULE_7__ = __nccwpck_require__(2037);
+/* harmony import */ var os__WEBPACK_IMPORTED_MODULE_6__ = __nccwpck_require__(2037);
+/* harmony import */ var decompress__WEBPACK_IMPORTED_MODULE_7__ = __nccwpck_require__(9350);
 /* harmony import */ var buffer__WEBPACK_IMPORTED_MODULE_8__ = __nccwpck_require__(4300);
+/* harmony import */ var process__WEBPACK_IMPORTED_MODULE_9__ = __nccwpck_require__(7282);
+
 
 
 
@@ -41928,7 +41937,7 @@ const name = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('artifact_name'
 const directory = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('directory') || "artifact";
 
 const octokit = _actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit(githubToken);
-
+const tempDir = process__WEBPACK_IMPORTED_MODULE_9__.env.RUNNER_TEMP || os__WEBPACK_IMPORTED_MODULE_6__.tmpdir();
 const per_page = 100;
 
 const { data } = await octokit.request("GET /repos/{owner}/{repo}/actions/artifacts",{
@@ -41948,9 +41957,9 @@ for(const artifact of artifacts) {
       artifact_id: artifact.id
     });
 
-    fs__WEBPACK_IMPORTED_MODULE_5__.appendFileSync(`${os__WEBPACK_IMPORTED_MODULE_7__.tmpdir()}/${artifact.name}.zip`, buffer__WEBPACK_IMPORTED_MODULE_8__.Buffer.from(response.data));
-    decompress__WEBPACK_IMPORTED_MODULE_6__(`${os__WEBPACK_IMPORTED_MODULE_7__.tmpdir()}/${artifact.name}.zip`, directory);
-    fs__WEBPACK_IMPORTED_MODULE_5__.unlinkSync(`${os__WEBPACK_IMPORTED_MODULE_7__.tmpdir()}/${artifact.name}.zip`);
+    fs__WEBPACK_IMPORTED_MODULE_5__.appendFileSync(`${tempDir}/${artifact.name}.zip`, buffer__WEBPACK_IMPORTED_MODULE_8__.Buffer.from(response.data));
+    decompress__WEBPACK_IMPORTED_MODULE_7__(`${tempDir}/${artifact.name}.zip`, directory);
+    fs__WEBPACK_IMPORTED_MODULE_5__.unlinkSync(`${tempDir}/${artifact.name}.zip`);
 
     console.log(response);
     break;
