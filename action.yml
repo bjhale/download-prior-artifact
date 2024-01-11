@@ -1,0 +1,21 @@
+name: "download-prior-artifact-action"
+description: "Downloads artifact from the previous workflow run"
+inputs: 
+  github_token:
+    description: "The github token to use for authentication"
+    required: true
+  repository:
+    description: "The owner/repository to download the artifact from"
+    required: true
+  artifact_name:
+    description: "The name of the artifact to download"
+    required: false
+  minimum_age:
+    description: "The minimum age of the artifact to download in hours"
+    required: false
+  directory:
+    description: "The directory to extract the artifact to. Default: artifact"
+    required: false
+runs:
+  using: "node20"
+  main: "dist/index.js"
