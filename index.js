@@ -42,6 +42,9 @@ for(const artifact of artifacts) {
     });
 
     fs.appendFileSync(`${tempDir}/${artifact.name}.zip`, Buffer.from(response.data));
+
+    console.log(fs.readdirSync(tempDir));
+
     decompress(`${tempDir}/${artifact.name}.zip`, directory);
     fs.unlinkSync(`${tempDir}/${artifact.name}.zip`);
 
