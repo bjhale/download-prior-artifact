@@ -41959,7 +41959,7 @@ for(const artifact of artifacts) {
 
     fs__WEBPACK_IMPORTED_MODULE_5__.appendFileSync(`${tempDir}/${artifact.name}.zip`, buffer__WEBPACK_IMPORTED_MODULE_8__.Buffer.from(response.data));
 
-    console.log(fs__WEBPACK_IMPORTED_MODULE_5__.readdirSync(tempDir));
+    //console.log(fs.readdirSync(tempDir));
 
     decompress__WEBPACK_IMPORTED_MODULE_7__(`${tempDir}/${artifact.name}.zip`, directory);
     fs__WEBPACK_IMPORTED_MODULE_5__.unlinkSync(`${tempDir}/${artifact.name}.zip`);
