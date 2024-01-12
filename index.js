@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc.js';
 import timezone from 'dayjs/plugin/timezone.js';
 import fs from 'fs';
+import fsPromises from 'fs/promises';
 import os from 'os';
 import decompress from 'decompress';
 import { Buffer } from 'buffer';
@@ -41,10 +42,7 @@ for(const artifact of artifacts) {
       artifact_id: artifact.id
     });
 
-    fs.appendFileSync(`${tempDir}/${artifact.name}.zip`, Buffer.from(response.data));
-
-    //console.log(fs.readdirSync(tempDir));
-
+    await fsPromises.appendFile(`${tempDir}/${artifact.name}.zip`, Buffer.from(response.data));
     decompress(`${tempDir}/${artifact.name}.zip`, directory);
     fs.unlinkSync(`${tempDir}/${artifact.name}.zip`);
 
