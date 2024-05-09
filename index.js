@@ -45,7 +45,7 @@ for(const artifact of artifacts) {
     // For Jack: appendFileSync is not synchronous when writing a buffer, need to use
     // fsPromises.appendFile and await for synchronous behavior.
     await fsPromises.appendFile(`${tempDir}/${artifact.name}.zip`, Buffer.from(response.data));
-    decompress(`${tempDir}/${artifact.name}.zip`, directory);
+    await decompress(`${tempDir}/${artifact.name}.zip`, directory);
     fs.unlinkSync(`${tempDir}/${artifact.name}.zip`);
 
     console.log(response);
